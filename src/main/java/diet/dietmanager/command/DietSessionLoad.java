@@ -21,7 +21,7 @@ public class DietSessionLoad implements Command {
             ds = storage.readDietSession(listOfFiles[Integer.parseInt(input) - 1].getName());
             ds.start();
         } catch (NullPointerException e) {
-            System.out.println("Sorry, there is no file at that index.");
+            e.printStackTrace();
             logger.log(Level.INFO, "No file found at array index");
         } catch (FileNotFoundException e) {
             System.out.println("Sorry, there is no file at that index.");

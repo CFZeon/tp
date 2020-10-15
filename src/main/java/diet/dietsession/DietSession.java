@@ -17,7 +17,7 @@ public class DietSession {
     private final LocalDate date;
 
     private final DietSessionUI dietSessionUI;
-    private final diet.dietsession.CommandLib cl;
+    private transient diet.dietsession.CommandLib cl;
     private final Storage storage;
     private final DietSessionParser parser = new DietSessionParser();
     public boolean endDietSession = false;
@@ -52,7 +52,9 @@ public class DietSession {
     }
 
     public void start() throws IOException {
-        logger.log(Level.INFO, "starting profile session");
+        logger.log(Level.INFO, "starting diet session");
+        this.cl = new CommandLib();
+        cl.initDietManagerCL();
         dietSessionUI.printOpening();
         setEndDietSession(false);
         String input = dietSessionUI.getInput();
