@@ -1,6 +1,6 @@
 package profile;
 
-import static profile.components.Constants.PROFILE_STRING_REPRESENTATION;
+import static profile.Constants.PROFILE_STRING_REPRESENTATION;
 import static profile.parser.ProfileParser.checkValidProfile;
 
 /**

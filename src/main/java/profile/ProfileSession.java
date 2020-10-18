@@ -1,14 +1,15 @@
 package profile;
 
-import profile.commands.AddCommand;
-import profile.commands.Command;
-import profile.commands.CommandResult;
-import profile.commands.ExitCommand;
-import profile.components.ExceptionHandler;
-import profile.exceptions.SchwarzeneggerException;
+import logger.SchwarzeneggerLogger;
+import commands.profile.AddCommand;
+import commands.profile.Command;
+import commands.profile.CommandResult;
+import commands.profile.ExitCommand;
+import exceptions.ExceptionHandler;
+import exceptions.SchwarzeneggerException;
 import profile.parser.ProfileParser;
-import profile.storage.Storage;
-import profile.ui.ProfileUi;
+import storage.profile.Storage;
+import ui.profile.ProfileUi;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,18 +24,21 @@ public class ProfileSession {
     private ProfileParser profileParser;
     private Profile profile;
     private ExceptionHandler exceptionHandler;
-    private static Logger logger = Logger.getLogger("java.profile");
+    private Logger logger;
 
     /**
      * Constructs ProfileManager object.
+     *
+     * @param schwarzeneggerLogger Logger to record of information during program execution.
      */
-    public ProfileSession() {
+    public ProfileSession(SchwarzeneggerLogger schwarzeneggerLogger) {
         try {
+            logger = schwarzeneggerLogger.getLogger();
             logger.log(Level.INFO, "initialising ProfileSession object");
             hasExit = false;
             profileUi = new ProfileUi();
-            storage = new Storage();
-            profileParser = new ProfileParser();
+            storage = new Storage(logger);
+            profileParser = new ProfileParser(logger);
             exceptionHandler = new ExceptionHandler();
             profile = storage.loadData(profileUi);
 

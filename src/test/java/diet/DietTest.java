@@ -1,7 +1,7 @@
 package diet;
 
 
-import diet.dietmanager.DietManagerUI;
+import ui.diet.dietmanager.DietManagerUi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -9,12 +9,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import diet.dietmanager.command.DietSessionWrong;
 import diet.dietsession.Food;
-import diet.dietsession.command.Command;
-import diet.dietsession.command.FoodItemAdd;
-import diet.dietsession.command.FoodItemDelete;
-import diet.dietsession.command.FoodItemWrong;
+import commands.Command;
+import commands.diet.dietsession.FoodItemAdd;
+import commands.diet.dietsession.FoodItemDelete;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import storage.diet.Storage;
@@ -27,11 +25,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DietTest {
 
+    @Test
+    void extractDate_dateCorrectFormat_returnsDateString() {
+        String input = "/d 2020-11-11 /t lunch";
+        DietManagerUi ui = new DietManagerUi();
+        String dateString = ui.extractDate(input);
+        assertEquals(dateString, "11-11-2020");
+    }
+
+    @Test
+    void extract_dateWrongFormat_expectsException() {
+        String input = "/d 2020-22-22 /t lunch";
+        DietManagerUi ui = new DietManagerUi();
+        assertThrows(DateTimeParseException.class, () -> ui.extractDate(input));
+    }
 
     @Test
     void extract_dateNoDate_returnsCurrentDate() {
         String input = "/d";
-        DietManagerUI ui = new DietManagerUI();
+        DietManagerUi ui = new DietManagerUi();
         String dateString = ui.extractDate(input);
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy");
@@ -42,7 +54,7 @@ public class DietTest {
     @Test
     void extractMeal_mealCorrectFormat_returnsMealString() {
         String input = "/d 2020-11-11 /t lunch";
-        DietManagerUI ui = new DietManagerUI();
+        DietManagerUi ui = new DietManagerUi();
         String mealString = ui.extractMeal(input);
         assertEquals(mealString, "lunch");
     }
@@ -50,7 +62,7 @@ public class DietTest {
     @Test
     void extract_dateNoMeal_returnsUnspecified() {
         String input = "/d 2020-11-11 /t";
-        DietManagerUI ui = new DietManagerUI();
+        DietManagerUi ui = new DietManagerUi();
         String mealString = ui.extractMeal(input);
         assertEquals(mealString, "unspecified");
     }

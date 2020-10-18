@@ -1,14 +1,16 @@
 package diet.dietmanager;
 
-import diet.dietmanager.command.Command;
+import commands.CommandLib;
+import commands.Command;
 import storage.diet.Storage;
+import ui.diet.dietmanager.DietManagerUi;
 
 
 public class DietManager {
 
     private final CommandLib cl;
     private final DietManagerParser parser;
-    private final DietManagerUI dietManagerUI;
+    private final DietManagerUi dietManagerUI;
     private final Storage storage;
 
     public DietManager() {
@@ -16,11 +18,11 @@ public class DietManager {
         cl = new CommandLib();
         cl.initDietManagerCL();
         parser = new DietManagerParser();
-        dietManagerUI = new DietManagerUI();
+        dietManagerUI = new DietManagerUi();
     }
 
     public void start() {
-        DietManagerUI.printOpening();
+        DietManagerUi.printOpening();
         String input = dietManagerUI.getInput();
         assert input != null : "Null input before input loop";
         while (!input.equals("end")) {

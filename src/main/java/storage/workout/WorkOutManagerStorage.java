@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import seedu.duke.Constant;
-import workout.workoutmanager.WorkoutManagerUI;
+import ui.workout.workoutmanager.WorkoutManagerUi;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,10 +50,10 @@ public class WorkOutManagerStorage {
         }
     }
 
-    public static String add() {
+    public static String add(ArrayList<String> tags) {
         String newFilePath = Constant.WORKOUTSESSIONFOLDER + recordCount + ".json";
         int code = createfile(newFilePath);
-        PastWorkoutSessionRecord newRecord = new PastWorkoutSessionRecord(newFilePath);
+        PastWorkoutSessionRecord newRecord = new PastWorkoutSessionRecord(newFilePath, tags);
         pastFiles.add(newRecord);
         recordCount = pastFiles.size();
         writePastRecords();
@@ -70,15 +70,35 @@ public class WorkOutManagerStorage {
             System.out.println("The index is out of bound!");
             return;
         }
+        File myFile = new File(deletedRecord.getFilePath());
+        myFile.delete();
         recordCount = pastFiles.size();
         // todo: actually delete the file in the folder based on
         // the information in the deletedRecord
         writePastRecords();
     }
 
+    public static String edit(int index) {
+        PastWorkoutSessionRecord editedRecord;
+        editedRecord = pastFiles.get(index - 1);
+        PastWorkoutSessionRecord newRecord = editedRecord.edit();
+        pastFiles.set(index - 1, newRecord);
+        recordCount = pastFiles.size();
+        // todo: actually delete the file in the folder based on
+        // the information in the deletedRecord
+        writePastRecords();
+        return newRecord.getFilePath();
+    }
+
+    public static void clear() {
+        while (pastFiles.size() != 0) {
+            delete(1);
+        }
+    }
+
     private static void readPastRecords() {
         File file = new File(Constant.WORKOUTSESSIONHISTORY);
-        WorkoutManagerUI.printStartLoading();
+        WorkoutManagerUi.printStartLoading();
         Type taskListType = new TypeToken<ArrayList<PastWorkoutSessionRecord>>(){}.getType();
         try {
             JsonReader reader = new JsonReader(new FileReader(file.getPath()));
@@ -88,7 +108,7 @@ public class WorkOutManagerStorage {
             pastFiles = new ArrayList<>();
         }
         recordCount = pastFiles.size();
-        WorkoutManagerUI.printFinishLoading();
+        WorkoutManagerUi.printFinishLoading();
     }
 
     private static void writePastRecords() {

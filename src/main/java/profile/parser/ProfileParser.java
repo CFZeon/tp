@@ -1,34 +1,46 @@
 package profile.parser;
 
-import profile.commands.AddCommand;
-import profile.commands.Command;
-import profile.commands.DeleteCommand;
-import profile.commands.ExitCommand;
-import profile.commands.ViewCommand;
 import profile.Profile;
-import profile.exceptions.InvalidCommandWordException;
-import profile.exceptions.RedundantParamException;
+import commands.profile.AddCommand;
+import commands.profile.Command;
+import commands.profile.DeleteCommand;
+import commands.profile.ExitCommand;
+import commands.profile.ViewCommand;
+import exceptions.profile.InvalidCommandWordException;
+import exceptions.profile.RedundantParamException;
 
-import static profile.components.Constants.AGE_LOWER_BOUND;
-import static profile.components.Constants.AGE_UPPER_BOUND;
-import static profile.components.Constants.COMMAND_ARGS_INDEX;
-import static profile.components.Constants.COMMAND_SPLIT_LIMIT;
-import static profile.components.Constants.COMMAND_TYPE_INDEX;
-import static profile.components.Constants.COMMAND_WORD_ADD;
-import static profile.components.Constants.COMMAND_WORD_DELETE;
-import static profile.components.Constants.COMMAND_WORD_EXIT;
-import static profile.components.Constants.COMMAND_WORD_VIEW;
-import static profile.components.Constants.EMPTY_STRING;
-import static profile.components.Constants.GREEDY_WHITE_SPACE;
-import static profile.components.Constants.HEIGHT_LOWER_BOUND;
-import static profile.components.Constants.HEIGHT_UPPER_BOUND;
-import static profile.components.Constants.WEIGHT_LOWER_BOUND;
-import static profile.components.Constants.WEIGHT_UPPER_BOUND;
+import java.util.logging.Logger;
+
+import static profile.Constants.AGE_LOWER_BOUND;
+import static profile.Constants.AGE_UPPER_BOUND;
+import static profile.Constants.COMMAND_ARGS_INDEX;
+import static profile.Constants.COMMAND_SPLIT_LIMIT;
+import static profile.Constants.COMMAND_TYPE_INDEX;
+import static profile.Constants.COMMAND_WORD_ADD;
+import static profile.Constants.COMMAND_WORD_DELETE;
+import static profile.Constants.COMMAND_WORD_EXIT;
+import static profile.Constants.COMMAND_WORD_VIEW;
+import static profile.Constants.EMPTY_STRING;
+import static profile.Constants.GREEDY_WHITE_SPACE;
+import static profile.Constants.HEIGHT_LOWER_BOUND;
+import static profile.Constants.HEIGHT_UPPER_BOUND;
+import static profile.Constants.WEIGHT_LOWER_BOUND;
+import static profile.Constants.WEIGHT_UPPER_BOUND;
 
 /**
  * A class that deals with making sense of user's command inside Profile Session.
  */
 public class ProfileParser {
+    private Logger logger;
+
+    /**
+     * Constructs ProfileParser object.
+     *
+     * @param logger Logger to record of information during program execution.
+     */
+    public ProfileParser(Logger logger) {
+        this.logger = logger;
+    }
 
     /**
      * Parses and returns the Command associated with the user input.
@@ -45,13 +57,13 @@ public class ProfileParser {
 
         switch (commandType) {
         case COMMAND_WORD_ADD:
-            return new AddCommand(commandArgs);
+            return new AddCommand(commandArgs, logger);
         case COMMAND_WORD_DELETE:
-            return new DeleteCommand(commandArgs);
+            return new DeleteCommand(commandArgs, logger);
         case COMMAND_WORD_VIEW:
-            return new ViewCommand(commandArgs);
+            return new ViewCommand(commandArgs, logger);
         case COMMAND_WORD_EXIT:
-            return new ExitCommand(commandArgs);
+            return new ExitCommand(commandArgs, logger);
         default:
             throw new InvalidCommandWordException();
         }

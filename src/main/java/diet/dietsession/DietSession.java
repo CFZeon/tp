@@ -1,7 +1,9 @@
 package diet.dietsession;
 
-import diet.dietsession.command.Command;
+import commands.CommandLib;
+import commands.Command;
 import storage.diet.Storage;
+import ui.diet.dietsession.DietSessionUi;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -16,8 +18,8 @@ public class DietSession {
     private final String typeInput;
     private final LocalDate date;
 
-    private final DietSessionUI dietSessionUI;
-    private transient diet.dietsession.CommandLib cl;
+    private final DietSessionUi dietSessionUI;
+    private transient CommandLib cl;
     private final Storage storage;
     private final DietSessionParser parser = new DietSessionParser();
     public boolean endDietSession = false;
@@ -26,13 +28,13 @@ public class DietSession {
 
     public DietSession(String typeInput, String dateInput) {
         this.cl = new CommandLib();
-        cl.initDietManagerCL();
+        cl.initDietSessionCL();
         this.dateInput = dateInput;
         this.date = parser.parseDate(dateInput);
         this.typeInput = typeInput;
         this.foodList = new ArrayList<>();
         storage = new Storage();
-        dietSessionUI = new DietSessionUI();
+        dietSessionUI = new DietSessionUi();
     }
 
     public String getDateInput() {
@@ -56,7 +58,7 @@ public class DietSession {
 
         // command library is initialised again on start as it is transient variable
         this.cl = new CommandLib();
-        cl.initDietManagerCL();
+        cl.initDietSessionCL();
         dietSessionUI.printOpening();
         setEndDietSession(false);
         String input = dietSessionUI.getInput();

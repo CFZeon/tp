@@ -1,7 +1,6 @@
 package workout.workoutsession;
 
 import workout.workoutsession.exercise.Exercise;
-import workout.workoutsession.workoutsessionui.WorkoutSessionUI;
 
 public class WorkoutSessionParser {
 
