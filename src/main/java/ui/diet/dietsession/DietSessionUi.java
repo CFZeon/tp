@@ -30,6 +30,8 @@ public class DietSessionUi extends CommonUi {
 
     public static String MESSAGE_NO_FOOD_NAME = "Please enter food name!";
 
+    public static String MESSAGE_CLEAR_FOOD_ITEMS = "Alright, your food items have been cleared.";
+
     public void printExit() {
         showUser("Exiting Diet Session!");
     }
